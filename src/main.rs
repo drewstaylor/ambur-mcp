@@ -59,9 +59,8 @@ impl AmburMcp {
     /// Network tools
     #[tool(description = LIST_CONTRACTS_DESCR)]
     async fn list_contract_deployments(&self) -> Result<CallToolResult, Error> {
-        Ok(CallToolResult::success(vec![Content::text(
-            "todo".to_string(),
-        )]))
+        let serialized: String = serde_json::to_string(&self.contracts).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
     /// Query entry point tools
