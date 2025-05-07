@@ -166,7 +166,7 @@ marketplace smart contract, or that Ambur marketplace has imported as a dependen
 
     Here's an example of a custom definition showing the 'Cw20Token' custom type 
     expects a JSON object with one property called 'address' which has an 'Addr'
-    type:
+    type (which is a custom definition that equates to 'string' in JSON):
     "Cw20Token": {
       "type": "object",
       "required": [
