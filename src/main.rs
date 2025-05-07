@@ -1,12 +1,11 @@
+use philabs_cw721_marketplace::msg::QueryMsg;
 use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
     model::ProtocolVersion, model::ServerCapabilities, model::ServerInfo, tool, transport::stdio,
 };
-use schemars::JsonSchema;
+use schemars::{schema_for, JsonSchema};
 use serde::{Deserialize, Serialize};
 use std::error::Error as StdError;
-// use std::sync::Arc;
-// use tokio::sync::Mutex;
 
 pub mod global;
 use crate::global::*;
@@ -66,9 +65,9 @@ impl AmburMcp {
     /// Query entry point tools
     #[tool(description = LIST_QUERY_ENTRY_POINTS_DESCR)]
     async fn list_query_entry_points(&self) -> Result<CallToolResult, Error> {
-        Ok(CallToolResult::success(vec![Content::text(
-            "todo".to_string(),
-        )]))
+        let schema = schema_for!(QueryMsg);
+        let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
     #[tool(description = BUILD_QUERY_MSG_DESCR)]
