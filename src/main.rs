@@ -3,7 +3,7 @@ use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
     model::ProtocolVersion, model::ServerCapabilities, model::ServerInfo, tool, transport::stdio,
 };
-use schemars::{schema_for, JsonSchema};
+use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
 use std::error::Error as StdError;
 
