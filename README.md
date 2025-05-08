@@ -4,7 +4,7 @@ MCP server in Rust, for wrapping Ambur query and execute entry point messages to
 
 ### Building this project
 
-To build this project requires the `nightly` build of Rust, this will allowing using edition 2024 of rustc.
+To build this project requires the `nightly` build of Rust, this will allow using edition 2024 of rustc.
 
 ```sh
 # Build for development
