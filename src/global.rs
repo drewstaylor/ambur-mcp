@@ -186,6 +186,24 @@ chat partner of the names of all the available queries that can be made to the A
 marketplace contract, and also inform them of the calling parameters if they ask for 
 more information about a specific query."#;
 
+pub static LIST_QUERY_RESPONSE_DESCR: &str = r#"
+Call this tool to get a JSON schema for common query response types. This tool is 
+useful when your chat partner asks for more information about a specific query, if 
+you've already called the 'list_query_entry_points' tool and it has informed you 
+of the return type for the query. 
+
+The output from this tool is an object containing the JSON schema for the following 
+custom (developer) defined types:
+
+```DOCUMENTATION_BEGIN
+### All Query Return Types:
+* CollectionOfferDetailsResponse
+* CollectionRoyaltiesResponse 
+* DetailsResponse
+* ListResponse
+```DOCUMENTATION_END
+"#;
+
 pub static BUILD_QUERY_MSG_DESCR: &str = r#"
 Call this tool to build a prepared query message for a query to the Ambur NFT 
 marketplace contract. This tool won't broadcast the query or return the query 

@@ -8,7 +8,9 @@ use serde::{Deserialize, Serialize};
 use std::error::Error as StdError;
 
 pub mod global;
+pub mod query_response;
 use crate::global::*;
+use crate::query_response::AllResponse as AllQueryResponse;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn StdError>> {
@@ -66,6 +68,13 @@ impl AmburMcp {
     #[tool(description = LIST_QUERY_ENTRY_POINTS_DESCR)]
     async fn list_query_entry_points(&self) -> Result<CallToolResult, Error> {
         let schema = schema_for!(QueryMsg);
+        let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+
+    #[tool(description = LIST_QUERY_RESPONSE_DESCR)]
+    async fn list_query_responses(&self) -> Result<CallToolResult, Error> {
+        let schema = schema_for!(AllQueryResponse);
         let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
