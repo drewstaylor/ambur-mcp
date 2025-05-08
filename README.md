@@ -19,32 +19,32 @@ cargo build --release
 ### Connecting MCP to Claude Desktop
 
 For default setups, build a release binary and point the mcp server's `command` to its path. No run arguments (`args`) are required:
-```json
+```js
 // claude_desktop_config.json
 {
-	"mcpServers": {
-		"ambur": {
-			"command": "/your-computer-path/ambur-mcp/target/release/ambur-mcp",
-			"args": []
-		}
-	}
+  "mcpServers": {
+    "ambur": {
+      "command": "/your-computer-path/ambur-mcp/target/release/ambur-mcp",
+      "args": []
+    }
+  }
 }
 ```
 
 For Virtual Machine setups and WSL users, execute the VM as the `command` and use run arguments (`args`) to point the VM where to run the binary:
-```json
+```js
 // claude_desktop_config.json
 {
-	"mcpServers": {
-		"ambur": {
-			"command": "wsl.exe",
-			"args": [
-				"bash",
-				"-ic",
-				"/home/lsd/work/archway/agents/mcp/ambur-mcp/target/release/ambur-mcp"
-			]
-		}
-	}
+  "mcpServers": {
+    "ambur": {
+      "command": "wsl.exe",
+      "args": [
+        "bash",
+        "-ic",
+        "/your-vm-path/ambur-mcp/target/release/ambur-mcp",
+      ]
+    }
+  }
 }
 ```
 
