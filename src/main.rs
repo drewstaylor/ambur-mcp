@@ -7,9 +7,11 @@ use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
 use std::error::Error as StdError;
 
-pub mod global;
+pub mod contract;
+pub mod instruction;
 pub mod query_response;
-use crate::global::*;
+use crate::contract::*;
+use crate::instruction::*;
 use crate::query_response::AllResponse as AllQueryResponse;
 
 #[tokio::main]
