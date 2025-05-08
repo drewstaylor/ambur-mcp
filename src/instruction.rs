@@ -174,7 +174,6 @@ marketplace smart contract, or that Ambur marketplace has imported as a dependen
     }
 ```DOCUMENTATION_END
 
-
 When summarizing the schema output derived by calling this tool, always inform your 
 chat partner of the names of all the available queries that can be made to the Ambur 
 marketplace contract, and also inform them of the calling parameters if they ask for 
@@ -198,6 +197,7 @@ custom (developer) defined types:
 ```DOCUMENTATION_END
 "#;
 
+// Prepare a query message for RPC broadcast
 pub static BUILD_QUERY_MSG_DESCR: &str = r#"
 Call this tool to build a prepared query message for a query to the Ambur NFT 
 marketplace contract. This tool won't broadcast the query or return the query 
@@ -211,9 +211,101 @@ Call this tool to get a list of possible transactions that can be made (e.g.
 execute entry points) to the Ambur marketplace contract, as well as their 
 associated calling parameters. This tool is helpful for discovering what parameters 
 a user must provide in order to build a perpared execute message for a tx to the 
-Ambur NFT marketplace smart contract."#;
+Ambur NFT marketplace smart contract.
 
-//Prepare a transaction message for signing and RPC broadcast
+The response provided from this tool is a JSON schema for the ExecuteMsg enum of the 
+Ambur maketplace contract. It would be too verbose to provide it to your chat 
+partner, so summarizing it will be crucial. 
+
+Below is some documentation to help you parse and understand the fields and 
+structure of the generated ExecuteMsg schema, so that you can extrapolate the 
+possible queries that can be made to the Ambur smart contract (some non-relevant 
+fields are excluded from the documentation and can be safely ignored):
+
+```DOCUMENTATION_BEGIN
+* "$schema": a metadata field clarifying which version of JSON schema was used for 
+generating this schema
+
+* "title": a field that clarifies what item was serialized into this JSON schema 
+(e.g. in this case the 'ExecuteMsg' enum from the Ambur marketplace smart contract)
+
+* "oneOf": an array of all transactions (txs) that can be made to the Ambur
+marketplace smart contract, as well as their calling parameters. 
+    - "required": the 'required' sub-field of 'oneOf' items is an array containing 
+    a single value. The single value contained by this array is the name of a 
+    valid tx that can be made to the Ambur marketplace contract
+    - "properties": the 'properties' sub-field of these 'oneOf' items provides an 
+    object representing the tx that contains any required and/or optional calling 
+    parameters. Since each calling parameter for Ambur txs are custom (developer) 
+    defined types, the calling parameters (contained by the tx object of the 
+    'properties' sub-field) will use a '$ref' key with a value that points to where 
+    the custom type definition can be located in the 'definitions' object of the 
+    provided schema for the 'ExecuteMsg' enum of the Ambur marketplace contract.
+
+    Here's an example "oneOf" item for the 'finish' tx (which consumes and executes 
+    a swap, AKA a trade, on Ambur marketplace):
+    {
+      "type": "object",
+      "required": [
+        "finish"
+      ],
+      "properties": {
+        "finish": {
+          "$ref": "/definitions/FinishSwapMsg"
+        }
+      },
+      "additionalProperties": false
+    }
+
+* Since the generated JSON schema for Ambur's 'ExecuteMsg' enum doesn't include 
+'description' sub-fields for its 'oneOf' items, here's some basic info describing 
+each tx entry point (e.g. 'ExecuteMsg' variant) of Ambur marketplace contract:
+    - `create`: Creates a swap of type 'Sale' or 'Offer'
+    - `finish`: Consumes a swap of type 'Sale' or 'Offer' and process asset 
+    ownership transfers; e.g. NFT(s) transfered to the buyer, and payment tokens
+    are transferred to the seller
+    - `cancel`: Cancels a created swap, must be called by the swap's creator
+    - `update`: Update either the price or expiration, or both, of a given swap. If 
+    the swap type is 'Offer', only the expiration can be 
+    updated. Must be called by the swap's creator
+    - `create_collection_offer`: Creates an offer to buy 1 or more NFTs from a 
+    given NFT collection. Sellers may fulfill this order with any NFT(s) from the 
+    collection regardless of their 'token_id's
+    - `cancel_collection_offer`: Cancel a collection offer. Must be called by the 
+    swap's creator
+    - `finish_collection_offer`: Consumes a collection offer swap and processes 
+    asset ownership transfers; e.g. NFT(s) transfered to the buyer, and payment tokens
+    are transferred to the seller
+    - `update_config`: Admin only tx to update the contract's configuration 
+    parameters
+    - `add_nft`: Admin only tx to give permission for an NFT collection to be traded 
+    in Ambur marketplace
+    - `remove_nft`: Admin only tx to remove permission for an NFT collection to be
+    traded in Ambur marketplace
+    - `update_nft`: Admin only tx to modify royalties settings (e.g. royalty fee 
+    percentage, and/or royalty recipient address) for an NFT collection in Ambur 
+    marketplace. 
+    - `withdraw`: Admin only tx to withdraw funds stored in the contract (e.g. 
+    withdraw accrued marketplace fees)
+    - `allow_payments`: Admin only tx to give permission for creating swaps with a 
+    given payment token (e.g. native token, or CW20 token)
+    - `disallow_payments`: Admin only tx to remove permission for creating swaps 
+    with a given payment token (e.g. native token, or CW20 token)
+
+* "definitions": an object containing type definitions for any custom (developer) 
+defined calling parameters used by the Ambur marketplace contracts txs. This 
+field is helpful because, since txs will be built as JSON messages, the 
+'defnitions' object enables you to instruct your chat partner on how to provide 
+the correct JSON values that satisfy the custom types for tx parameters as defined 
+in the Ambur marketplace smart contract.
+```DOCUMENTATION_END
+
+When summarizing the schema output derived by calling this tool, always inform your 
+chat partner of the names of all the available txs that can be made to the Ambur 
+marketplace contract, and also inform them of the calling parameters if they ask for 
+more information about a specific transaction."#;
+
+// Prepare a transaction message for signing and RPC broadcast
 pub static BUILD_EXECUTE_MSG_DESCR: &str = r#"
 Call this tool to build a prepared execute message for a transaction to the Ambur 
 NFT marketplace contract. This tool won't sign the message, or broadcast it to the 

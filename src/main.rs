@@ -1,4 +1,4 @@
-use philabs_cw721_marketplace::msg::QueryMsg;
+use philabs_cw721_marketplace::msg::{ExecuteMsg, QueryMsg};
 use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
     model::ProtocolVersion, model::ServerCapabilities, model::ServerInfo, tool, transport::stdio,
@@ -91,9 +91,9 @@ impl AmburMcp {
     /// Execute entry point tools
     #[tool(description = LIST_TX_ENTRY_POINTS_DESCR)]
     async fn list_tx_entry_points(&self) -> Result<CallToolResult, Error> {
-        Ok(CallToolResult::success(vec![Content::text(
-            "todo".to_string(),
-        )]))
+        let schema = schema_for!(ExecuteMsg);
+        let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
     #[tool(description = BUILD_EXECUTE_MSG_DESCR)]
