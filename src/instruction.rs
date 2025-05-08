@@ -190,10 +190,16 @@ custom (developer) defined types:
 
 ```DOCUMENTATION_BEGIN
 ### All Query Return Types:
-* CollectionOfferDetailsResponse
-* CollectionRoyaltiesResponse 
-* DetailsResponse
-* ListResponse
+* `CollectionOfferDetailsResponse`
+* `CollectionRoyaltiesResponse`
+* `DetailsResponse`
+* `ListResponse`
+
+**Notes:** 
+* `CollectionRoyaltiesResponse` has a sub-field called `fee_percentage` that has a format 
+of `uint64` in Rust and a type of `integer` in JSON representation. This 'fee_percentage' is 
+a whole number with a minimum value of 0 (e.g. 0% fees) and a maximum value of 30 (e.g. 30% 
+fees). `fee_percentage` is _not_ currently denominated in basis points.
 ```DOCUMENTATION_END
 "#;
 
@@ -260,17 +266,26 @@ marketplace smart contract, as well as their calling parameters.
 * Since the generated JSON schema for Ambur's 'ExecuteMsg' enum doesn't include 
 'description' sub-fields for its 'oneOf' items, here's some basic info describing 
 each tx entry point (e.g. 'ExecuteMsg' variant) of Ambur marketplace contract:
-    - `create`: Creates a swap of type 'Sale' or 'Offer'
-    - `finish`: Consumes a swap of type 'Sale' or 'Offer' and process asset 
+    - `create`: Creates a swap of type 'Sale' or 'Offer'. 'Offer' swaps can only be 
+    created with a CW20 token as the payment token (e.g. to avoid needing to hold the 
+    offerer's funds in escrow)
+    - `finish`: Consumes a swap of type 'Sale' or 'Offer' and processes asset 
     ownership transfers; e.g. NFT(s) transfered to the buyer, and payment tokens
-    are transferred to the seller
+    are transferred to the seller. If the payment token is native (e.g. ARCH), the buyer 
+    must send the correct native funds amount in their tx (e.g. in the 'funds' array of 
+    the 'CosmosMsg'). For 'Offers' the CW20 tokens will be automatically transferred from 
+    buyer to the seller, assuming i) the buyer has sufficient token balance, and ii) has 
+    approved the Ambur marketplace contract to spend the required payment token amount
     - `cancel`: Cancels a created swap, must be called by the swap's creator
     - `update`: Update either the price or expiration, or both, of a given swap. If 
     the swap type is 'Offer', only the expiration can be 
     updated. Must be called by the swap's creator
     - `create_collection_offer`: Creates an offer to buy 1 or more NFTs from a 
     given NFT collection. Sellers may fulfill this order with any NFT(s) from the 
-    collection regardless of their 'token_id's
+    collection regardless of their 'token_id's. The `price` field of the collection offer 
+    refers to the price to purchase all the NFTs being offered as a batch, it is _not_ the 
+    price per NFT. Collection offers can only be created with a CW20 token as the payment 
+    token (e.g. to avoid needing to hold the offerer's funds in escrow)
     - `cancel_collection_offer`: Cancel a collection offer. Must be called by the 
     swap's creator
     - `finish_collection_offer`: Consumes a collection offer swap and processes 
