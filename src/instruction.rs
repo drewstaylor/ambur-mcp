@@ -205,15 +205,13 @@ fees). `fee_percentage` is _not_ currently denominated in basis points.
 
 // Prepare a query message for RPC broadcast
 pub static BUILD_QUERY_MSG_DESCR: &str = r#"
-Call this tool to build a prepared query message for a query to the Ambur NFT 
-marketplace contract. This tool won't broadcast the query or return the query 
-result, but can be combined with any RPC connected query tool that accepts a 
-well-formed Cosmos QueryRequest.
+Call this tool to build a prepared query message for a query to the Ambur NFT marketplace 
+contract. This tool won't broadcast the query or return the query result, but can be 
+combined with any RPC connected query tool that accepts a well-formed Cosmos QueryRequest.
 
-There are two calling parameters required when calling this tool: the Ambur 
-contract address (e.g. either the mainnet or testnet contract address; see tool: 
-'list_contract_deployments'), and QueryMsg variant to be built into a Cosmos 
-QueryRequest.
+There are two calling parameters required when calling this tool: the Ambur contract address 
+('contract_addr', e.g. either the mainnet or testnet contract address; see tool: 
+'list_contract_deployments'), and QueryMsg variant to be built into a Cosmos QueryRequest.
 
 See the below documentation for more info about QueryMsg variants: 
 
@@ -363,17 +361,11 @@ blockchain, but can be combined with any RPC connected tx tool that accepts a we
 formed CosmosMsg for an ExecuteMsg variant for any valid Ambur marketplace contract 
 execute (tx) entry point.
 
-Note that your chat partner does not need to inform you of any amount of native funds 
-to be sent along with the transaction, this is because Ambur marketplace handles 
-payments using USDC on Archway Network, which is a CW20 token. While the contract does 
-support native token payments (e.g. in ARCH), this is only a legacy feature and ARCH is 
-not currently enabled as an allowed payment option in the contract configuration.
-
 There are three calling parameters required when calling this tool: the Ambur 
-contract address (e.g. either the mainnet or testnet contract address; see tool: 
-'list_contract_deployments'), the amount of native funds to send in the transaction, 
-and the ExecuteMsg variant to be built into a CosmosMsg that can be broadcast by any RPC 
-connected tool.
+contract address ('contract_addr', e.g. either the mainnet or testnet contract address; see 
+tool: 'list_contract_deployments'), the amount of native funds ('payment') to send in the 
+transaction, and the ExecuteMsg variant ('execute_msg') to be built into a CosmosMsg that can 
+be signed and broadcast by an RPC connected signing wallet.
 
 See the below documentation for more info about funding amounts and the ExecuteMsg variants: 
 
