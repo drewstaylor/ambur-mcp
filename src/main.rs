@@ -1,6 +1,4 @@
-use cosmwasm_std::{
-    Coin, CosmosMsg, QueryRequest, to_json_binary, WasmMsg, WasmQuery
-};
+use cosmwasm_std::{Coin, CosmosMsg, QueryRequest, WasmMsg, WasmQuery, to_json_binary};
 use philabs_cw721_marketplace::msg::{ExecuteMsg, QueryMsg};
 use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
@@ -88,10 +86,14 @@ impl AmburMcp {
     async fn build_query_msg(
         &self,
         #[tool(param)]
-        #[schemars(description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)")]
+        #[schemars(
+            description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)"
+        )]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(description = "QueryMsg variant and its values needed for building the query as a Cosmos SDK QueryRequest")]
+        #[schemars(
+            description = "QueryMsg variant and its values needed for building the query as a Cosmos SDK QueryRequest"
+        )]
         query_msg: QueryMsg,
     ) -> Result<CallToolResult, Error> {
         let query_req: QueryRequest<QueryMsg> = QueryRequest::Wasm(WasmQuery::Smart {
@@ -114,19 +116,25 @@ impl AmburMcp {
     async fn build_execute_msg(
         &self,
         #[tool(param)]
-        #[schemars(description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)")]
+        #[schemars(
+            description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)"
+        )]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg")]
+        #[schemars(
+            description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg"
+        )]
         execute_msg: ExecuteMsg,
         #[tool(param)]
-        #[schemars(description = "Optionally include native payment funds to be sent in the transaction. Only required for 'finish' txs if payment_token is a native token.")]
+        #[schemars(
+            description = "Optionally include native payment funds to be sent in the transaction. Only required for 'finish' txs if payment_token is a native token."
+        )]
         payment: Option<Coin>,
     ) -> Result<CallToolResult, Error> {
-        let funds: Vec<Coin> = if payment.is_some() { 
-            vec![payment.unwrap_or_default()] 
-        } else { 
-            vec![] 
+        let funds: Vec<Coin> = if payment.is_some() {
+            vec![payment.unwrap_or_default()]
+        } else {
+            vec![]
         };
         let execute_msg: CosmosMsg = WasmMsg::Execute {
             contract_addr,

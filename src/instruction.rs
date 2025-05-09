@@ -436,7 +436,6 @@ parameter values:
 ```DOCUMENTATION_END
 "#;
 
-
 // Parameter descriptions
 pub static CONTRACT_PARAMETER_DESCR: &str = r#"Either the mainnet or tesnet contract 
 address of the Ambur marketplace (e.g. as can be fetched by calling the 
