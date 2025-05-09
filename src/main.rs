@@ -1,3 +1,4 @@
+use cosmwasm_std::{QueryRequest, to_json_binary, WasmQuery};
 use philabs_cw721_marketplace::msg::{ExecuteMsg, QueryMsg};
 use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
@@ -82,10 +83,21 @@ impl AmburMcp {
     }
 
     #[tool(description = BUILD_QUERY_MSG_DESCR)]
-    async fn build_query_msg(&self) -> Result<CallToolResult, Error> {
-        Ok(CallToolResult::success(vec![Content::text(
-            "todo".to_string(),
-        )]))
+    async fn build_query_msg(
+        &self,
+        #[tool(param)]
+        #[schemars(description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)")]
+        contract_addr: String,
+        #[tool(param)]
+        #[schemars(description = "QueryMsg variant and values needed for building the query as a Cosmos SDK QueryRequest")]
+        query_msg: QueryMsg,
+    ) -> Result<CallToolResult, Error> {
+        let query_req: QueryRequest<QueryMsg> = QueryRequest::Wasm(WasmQuery::Smart {
+            contract_addr,
+            msg: to_json_binary(&query_msg).unwrap_or_default(),
+        });
+        let serialized: String = serde_json::to_string(&query_req).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
     /// Execute entry point tools

@@ -208,8 +208,43 @@ pub static BUILD_QUERY_MSG_DESCR: &str = r#"
 Call this tool to build a prepared query message for a query to the Ambur NFT 
 marketplace contract. This tool won't broadcast the query or return the query 
 result, but can be combined with any RPC connected query tool that accepts a 
-well-formed QueryMsg variant for any valid Ambur marketplace contract query entry 
-point."#;
+well-formed Cosmos QueryRequest.
+
+There are two calling parameters required when calling this tool: the Ambur 
+contract address (e.g. either the mainnet or testnet contract address; see tool: 
+'list_contract_deployments'), and QueryMsg variant to be built into a Cosmos 
+QueryRequest.
+
+See the below documentation for more info about QueryMsg variants: 
+
+```DOCUMENTATION_BEGIN
+* Here's an example of a QueryMsg variant (e.g. for the 'list_allowed_payments' query) with 
+no required parameter values:
+
+{
+  "list_allowed_payments": {}
+}
+
+* Here's an example of a QueryMsg variant (e.g. for the 'details' query) with required 
+parameter values:
+
+{
+  "details": {
+    "id": "swap-id-52d709fd-8cfe-45e1"
+  }
+}
+
+* Here's an example of a QueryMsg variant (e.g. for the 'list' query) where the optional 
+parameters are ignored:
+
+{
+  "list": {
+    "limit": null,
+    "start_after": null
+  }
+}
+```DOCUMENTATION_END
+"#;
 
 // Execute
 pub static LIST_TX_ENTRY_POINTS_DESCR: &str = r#"
@@ -325,5 +360,21 @@ pub static BUILD_EXECUTE_MSG_DESCR: &str = r#"
 Call this tool to build a prepared execute message for a transaction to the Ambur 
 NFT marketplace contract. This tool won't sign the message, or broadcast it to the 
 blockchain, but can be combined with any RPC connected tx tool that accepts a well-
-formed ExecuteMsg variant for any valid Ambur marketplace contract execute entry 
-point."#;
+formed CosmosMsg for an ExecuteMsg variant for any valid Ambur marketplace contract 
+execute entry point."#;
+
+
+// Parameter descriptions
+pub static CONTRACT_PARAMETER_DESCR: &str = r#"Either the mainnet or tesnet contract 
+address of the Ambur marketplace (e.g. as can be fetched by calling the 
+'list_contract_deployments' tool)"#;
+
+// build_query_msg(QueryMsg)
+pub static QUERY_MSG_PARAMETER_DESCR: &str = r#"
+The 'QueryMsg' enum variant and its required and/or optional parameter values (if any), 
+needed for building the query as a Cosmos SDK 'QueryRequest' so that the query can be 
+successfully built and prepared to be sent to the Ambur marketplace smart contract. If 
+parameter values are required, they must be collected from your chat partner."#;
+
+// build_execute_msg(ExecuteMsg)
+// pub static EXECUTE_MSG_PARAMETER_DESCR: &str = r#""#;

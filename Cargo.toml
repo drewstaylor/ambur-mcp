@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+cosmwasm-std = "2.2.2"
 philabs-cw721-marketplace = { path = "./packages/philabs-cw721-marketplace", features = ["library"] }
 rmcp = { version = "0.1.5", features = ["transport-io"] }
 schemars = "0.8.22"
