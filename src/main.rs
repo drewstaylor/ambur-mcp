@@ -127,7 +127,7 @@ impl AmburMcp {
         execute_msg: ExecuteMsg,
         #[tool(param)]
         #[schemars(
-            description = "Optionally include native payment funds to be sent in the transaction. Only required for 'finish' txs if payment_token is a native token."
+            description = "Optionally include native payment funds to be sent in the transaction (only required for 'finish' txs if payment_token is a native token)"
         )]
         payment: Option<Coin>,
     ) -> Result<CallToolResult, Error> {
