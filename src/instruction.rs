@@ -361,7 +361,80 @@ Call this tool to build a prepared execute message for a transaction to the Ambu
 NFT marketplace contract. This tool won't sign the message, or broadcast it to the 
 blockchain, but can be combined with any RPC connected tx tool that accepts a well-
 formed CosmosMsg for an ExecuteMsg variant for any valid Ambur marketplace contract 
-execute entry point."#;
+execute (tx) entry point.
+
+Note that your chat partner does not need to inform you of any amount of native funds 
+to be sent along with the transaction, this is because Ambur marketplace handles 
+payments using USDC on Archway Network, which is a CW20 token. While the contract does 
+support native token payments (e.g. in ARCH), this is only a legacy feature and ARCH is 
+not currently enabled as an allowed payment option in the contract configuration.
+
+There are three calling parameters required when calling this tool: the Ambur 
+contract address (e.g. either the mainnet or testnet contract address; see tool: 
+'list_contract_deployments'), the amount of native funds to send in the transaction, 
+and the ExecuteMsg variant to be built into a CosmosMsg that can be broadcast by any RPC 
+connected tool.
+
+See the below documentation for more info about funding amounts and the ExecuteMsg variants: 
+
+```DOCUMENTATION_BEGIN
+* All 'create' swaps with swap type 'Sale' must use Archway Network's USDC native 
+coin as the payment token, which has a denom value of 
+'ibc/43897B9739BD63E3A08A88191999C632E052724AB96BD4C74AE31375C991F48D'
+
+* All 'create' swaps with swap type 'Offer' must use Archway Network's wUSDC CW20 coin as 
+the payment token, which has a denom of 'wUSDC' and a contract address of 
+archway1gaf9nw7n8v5lpjz9caxjpps006kxfcrzcuc8y5qp4clslhven2ns2g0ule
+
+* Both USDC and wUSDC have a decimal precision of 6 decimals (10**6)
+
+* Here's an example of a ExecuteMsg variant (e.g. for a Sale 'create' tx) with its required 
+parameter values:
+
+{
+  "create": {
+    "id": "cca4e046-97ba-45b2-841b-9adca039545e",
+    "cw721": "archway1r9qqfl2ptc96frn3tx4k2n967xc64uwxg2j9xn2rvsm882fu04kq3hutsv",
+    "token_id": "840",
+    "payment_token": {
+      "native": {
+        "denom": "ibc/43897B9739BD63E3A08A88191999C632E052724AB96BD4C74AE31375C991F48D"
+      }
+    },
+    "price": "8880000",
+    "swap_type": "Sale",
+    "expires": {
+      "never": {}
+    }
+  }
+}
+
+* Here's an example of a ExecuteMsg variant (e.g. for an Offer 'create' tx) with its required 
+parameter values:
+
+{
+  "create": {
+    "id": "9fb7be1f-0a25-451a-bc5e-31b13d9b850b",
+    "cw721": "archway1r9qqfl2ptc96frn3tx4k2n967xc64uwxg2j9xn2rvsm882fu04kq3hutsv",
+    "token_id": "427",
+    "payment_token": {
+      "cw20": {
+        "address": "archway1gaf9nw7n8v5lpjz9caxjpps006kxfcrzcuc8y5qp4clslhven2ns2g0ule"
+      }
+    },
+    "price": "888888",
+    "swap_type": "Offer",
+    "expires": {
+      "at_time": "1747415615458000000"
+    }
+  }
+}
+
+//XXX TODO: explain how to send funds in the 'finish' tx
+//here
+* All 
+```DOCUMENTATION_END
+"#;
 
 
 // Parameter descriptions

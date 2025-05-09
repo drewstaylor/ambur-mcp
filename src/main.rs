@@ -1,4 +1,6 @@
-use cosmwasm_std::{QueryRequest, to_json_binary, WasmQuery};
+use cosmwasm_std::{
+    Coin, CosmosMsg, QueryRequest, to_json_binary, WasmMsg, WasmQuery
+};
 use philabs_cw721_marketplace::msg::{ExecuteMsg, QueryMsg};
 use rmcp::{
     Error, ServerHandler, ServiceExt, model::CallToolResult, model::Content, model::Implementation,
@@ -89,7 +91,7 @@ impl AmburMcp {
         #[schemars(description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)")]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(description = "QueryMsg variant and values needed for building the query as a Cosmos SDK QueryRequest")]
+        #[schemars(description = "QueryMsg variant and its values needed for building the query as a Cosmos SDK QueryRequest")]
         query_msg: QueryMsg,
     ) -> Result<CallToolResult, Error> {
         let query_req: QueryRequest<QueryMsg> = QueryRequest::Wasm(WasmQuery::Smart {
@@ -109,10 +111,31 @@ impl AmburMcp {
     }
 
     #[tool(description = BUILD_EXECUTE_MSG_DESCR)]
-    async fn build_execute_msg(&self) -> Result<CallToolResult, Error> {
-        Ok(CallToolResult::success(vec![Content::text(
-            "todo".to_string(),
-        )]))
+    async fn build_execute_msg(
+        &self,
+        #[tool(param)]
+        #[schemars(description = "contract address of Ambur marketplace (e.g. mainnet or testnet address)")]
+        contract_addr: String,
+        #[tool(param)]
+        #[schemars(description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg")]
+        execute_msg: ExecuteMsg,
+        #[tool(param)]
+        #[schemars(description = "Optionally include native payment funds to be sent in the transaction. Only required for 'finish' txs if payment_token is a native token.")]
+        payment: Option<Coin>,
+    ) -> Result<CallToolResult, Error> {
+        let funds: Vec<Coin> = if payment.is_some() { 
+            vec![payment.unwrap_or_default()] 
+        } else { 
+            vec![] 
+        };
+        let execute_msg: CosmosMsg = WasmMsg::Execute {
+            contract_addr,
+            msg: to_json_binary(&execute_msg).unwrap_or_default(),
+            funds,
+        }
+        .into();
+        let serialized: String = serde_json::to_string(&execute_msg).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 }
 
