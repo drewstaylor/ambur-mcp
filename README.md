@@ -55,7 +55,7 @@ For Virtual Machine setups and WSL users, execute the VM as the `command` and us
 
 ### Connecting MCP to LangGraph
 
-[@langchain/mcp-adapters](https://www.npmjs.com/package/@langchain/mcp-adapters) must be installed in the graph project. This package will conver the MCP endpoints into Graph tools.
+[@langchain/mcp-adapters](https://www.npmjs.com/package/@langchain/mcp-adapters) must be installed in the graph project. This package will convert the MCP endpoints into Graph tools.
 
 #### Using @langchain/mcp-adapters
 
