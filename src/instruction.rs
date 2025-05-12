@@ -242,6 +242,10 @@ parameters are ignored:
   }
 }
 ```DOCUMENTATION_END
+
+Submit both the `contract_addr` and `query_msg` calling parameters in string format. For 
+example, a `details` QueryMsg variant can be submitted to the tool like this: 
+"{\"details\":{\"id\":\"cca4e046-97ba-45b2-841b-9adca039545e\"}}"
 "#;
 
 // Execute
@@ -422,23 +426,19 @@ parameter values:
   }
 }
 
-//XXX TODO: explain how to send funds in the 'finish' tx
-//here
-* All 
+* Here's the schema for adding a native payment to a transaction to be built (e.g. for 
+'finish' txs with a native payment token):
+
+{
+  "denom": "ibc/43897B9739BD63E3A08A88191999C632E052724AB96BD4C74AE31375C991F48D",
+  "amount": "888888",
+}
+
+**NOTE**: "ibc/43897B9739BD63E3A08A88191999C632E052724AB96BD4C74AE31375C991F48D" is the 
+denom for USDC on Archway Network (which is currently the only allowed native payment 
+token).
 ```DOCUMENTATION_END
-"#;
 
-// Parameter descriptions
-pub static CONTRACT_PARAMETER_DESCR: &str = r#"Either the mainnet or tesnet contract 
-address of the Ambur marketplace (e.g. as can be fetched by calling the 
-'list_contract_deployments' tool)"#;
-
-// build_query_msg(QueryMsg)
-pub static QUERY_MSG_PARAMETER_DESCR: &str = r#"
-The 'QueryMsg' enum variant and its required and/or optional parameter values (if any), 
-needed for building the query as a Cosmos SDK 'QueryRequest' so that the query can be 
-successfully built and prepared to be sent to the Ambur marketplace smart contract. If 
-parameter values are required, they must be collected from your chat partner."#;
-
-// build_execute_msg(ExecuteMsg)
-// pub static EXECUTE_MSG_PARAMETER_DESCR: &str = r#""#;
+Submit all three calling parameters (`contract_addr`, `execute_msg` and `payment`) 
+to tool in string format. For example, use stringified JSON for the `execute_msg` and 
+`payment` calling parameters."#;

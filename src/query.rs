@@ -11,3 +11,9 @@ pub struct AllResponse {
     pub collection_royalties_response: CollectionRoyaltiesResponse,
     pub collection_offer_details_response: CollectionOfferDetailsResponse,
 }
+
+#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
+pub struct ValidatedQuery {
+    pub query_msg: String,
+    pub query_request: String,
+}
