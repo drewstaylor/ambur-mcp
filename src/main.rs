@@ -11,10 +11,12 @@ use std::error::Error as StdError;
 pub mod contract;
 pub mod execute;
 pub mod instruction;
+pub mod network;
 pub mod query;
 use crate::contract::*;
 use crate::execute::*;
 use crate::instruction::*;
+use crate::network::*;
 use crate::query::{AllResponse as AllQueryResponse, ValidatedQuery};
 
 #[tokio::main]
@@ -26,19 +28,6 @@ async fn main() -> Result<(), Box<dyn StdError>> {
     mcp_server.waiting().await?;
 
     Ok(())
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub enum ArchwayNetwork {
-    Mainnet,
-    Constantine,
-    Titus,
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct AmburContract {
-    network: ArchwayNetwork,
-    contract_address: String,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
