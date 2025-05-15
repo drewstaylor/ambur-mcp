@@ -8,7 +8,8 @@ pub mod server;
 use rmcp::{ServiceExt, transport::stdio};
 use std::error::Error as StdError;
 
-use crate::server::{ambur::AmburMcp, token::AmburTokenMcp};
+// use crate::server::{ambur::AmburMcp, token::AmburTokenMcp};
+use crate::server::ambur::AmburMcp;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn StdError>> {
@@ -17,10 +18,10 @@ async fn main() -> Result<(), Box<dyn StdError>> {
     })?;
     ambur_mcp.waiting().await?;
 
-    let token_mcp = AmburTokenMcp::new().serve(stdio()).await.inspect_err(|e| {
-        println!("{e}");
-    })?;
-    token_mcp.waiting().await?;
+    // let token_mcp = AmburTokenMcp::new().serve(stdio()).await.inspect_err(|e| {
+    //     println!("{e}");
+    // })?;
+    // token_mcp.waiting().await?;
 
     Ok(())
 }
