@@ -16,6 +16,7 @@ use crate::query::{AllResponse as AllQueryResponse, ValidatedQuery};
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct AmburMcp {
     contracts: [AmburContract; 2],
+    collections: Vec<AmburCollection>,
 }
 #[tool(tool_box)]
 impl AmburMcp {
@@ -31,17 +32,129 @@ impl AmburMcp {
                     contract_address: CONTRACT_CONSTANTINE.to_string(),
                 },
             ],
+            collections: vec![
+                AmburCollection {
+                    name: "Archies".to_string(),
+                    description: ARCHIES_DESCR.to_string(),
+                    contract_addresses: CollectionContract {
+                        token: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: TOKEN_ARCHIES_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: TOKEN_ARCHIES_CONSTANTINE.to_string(),
+                            },
+                        ],
+                        minter: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: MINTER_ARCHIES_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: MINTER_ARCHIES_CONSTANTINE.to_string(),
+                            },
+                        ],
+                    },
+                },
+                AmburCollection {
+                    name: "The Foresight Ticket".to_string(),
+                    description: FORESIGHT_DESCR.to_string(),
+                    contract_addresses: CollectionContract {
+                        token: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: TOKEN_FORESIGHT_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: TOKEN_FORESIGHT_CONSTANTINE.to_string(),
+                            },
+                        ],
+                        minter: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: MINTER_FORESIGHT_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: MINTER_FORESIGHT_CONSTANTINE.to_string(),
+                            },
+                        ],
+                    },
+                },
+                AmburCollection {
+                    name: "Derpies".to_string(),
+                    description: DERPIES_DESCR.to_string(),
+                    contract_addresses: CollectionContract {
+                        token: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: TOKEN_DERPIES_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: TOKEN_DERPIES_CONSTANTINE.to_string(),
+                            },
+                        ],
+                        minter: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: MINTER_DERPIES_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: MINTER_DERPIES_CONSTANTINE.to_string(),
+                            },
+                        ],
+                    },
+                },
+                AmburCollection {
+                    name: "Ghouls".to_string(),
+                    description: GHOULS_DESCR.to_string(),
+                    contract_addresses: CollectionContract {
+                        token: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: TOKEN_GHOULS_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: TOKEN_GHOULS_CONSTANTINE.to_string(),
+                            },
+                        ],
+                        minter: [
+                            AmburContract {
+                                network: ArchwayNetwork::Mainnet,
+                                contract_address: MINTER_GHOULS_MAINNET.to_string(),
+                            },
+                            AmburContract {
+                                network: ArchwayNetwork::Constantine,
+                                contract_address: MINTER_GHOULS_CONSTANTINE.to_string(),
+                            },
+                        ],
+                    },
+                },
+            ],
         }
     }
 
-    /// Network tools
+    // Contracts and collections tools
     #[tool(description = LIST_CONTRACTS_DESCR)]
     async fn list_contract_deployments(&self) -> Result<CallToolResult, Error> {
         let serialized: String = serde_json::to_string(&self.contracts).unwrap_or("".to_string());
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    /// Query entry point tools
+    #[tool(description = LIST_NFT_COLLECTIONS_DESCR)]
+    async fn list_nft_collections(&self) -> Result<CallToolResult, Error> {
+        let serialized: String = serde_json::to_string(&self.collections).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+
+    // Query entry point tools
     #[tool(description = LIST_QUERY_ENTRY_POINTS_DESCR)]
     async fn list_query_entry_points(&self) -> Result<CallToolResult, Error> {
         let schema = schema_for!(QueryMsg);
@@ -89,7 +202,7 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    /// Execute entry point tools
+    // Execute entry point tools
     #[tool(description = LIST_TX_ENTRY_POINTS_DESCR)]
     async fn list_tx_entry_points(&self) -> Result<CallToolResult, Error> {
         let schema = schema_for!(ExecuteMsg);

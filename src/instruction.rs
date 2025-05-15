@@ -18,12 +18,30 @@ RPC enabled tool with wallet signing capabilities
 "#;
 
 // Tool descriptions
-// Network
+// Contracts & Collections
 pub static LIST_CONTRACTS_DESCR: &str = r#"
 Call this tool to get a list of contract addresses, and associated Archway Network, 
 where the Ambur marketplace contract has been deployed. This tool is helpful for 
 discovering the mainnet and testnet contract addresses for the Ambur marketplace 
 smart contract."#;
+
+pub static LIST_NFT_COLLECTIONS_DESCR: &str = r#"
+Call this tool to get a list of NFT collections that can be traded in the Ambur marketplace 
+contract. The detailed response will provide the following information about each NFT 
+collection:
+
+```DOCUMENTATION_BEGIN
+* Collection name
+* Collection description
+* Collection contract addresses for the token contract (the nft) and the minter contract (a 
+manager contract that operates as admin over the token contract)
+    - Users will need to make txs to the minter contract for certain behaviours, including: 
+    minting NFTs, revealing NFT metadata, and redeeming Foresight NFTs for entry into the 
+    whitelist for minting newly launching collections.
+```DOCUMENTATION_END
+
+This tool is helpful for discovering the mainnet and tesnet contract addresses for tokens 
+listed for trading in the Ambur marketplace smart contract."#;
 
 // Query
 pub static LIST_QUERY_ENTRY_POINTS_DESCR: &str = r#"
