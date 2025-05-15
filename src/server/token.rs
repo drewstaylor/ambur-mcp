@@ -50,7 +50,7 @@ impl AmburTokenMcp {
 
     // Query entry point tools
     #[tool(description = "XXX TODO")]
-    async fn list_query_entry_points(
+    async fn list_token_query_entry_points(
         &self,
         #[tool(param)]
         #[schemars(
@@ -76,7 +76,7 @@ impl AmburTokenMcp {
     }
 
     #[tool(description = "XXX TODO")]
-    async fn build_query_msg(
+    async fn build_token_query_msg(
         &self,
         #[tool(param)]
         #[schemars(description = "contract address of cw721 token")]
@@ -108,7 +108,7 @@ impl AmburTokenMcp {
 
     // Execute entry point tools
     #[tool(description = "XXX TODO")]
-    async fn list_tx_entry_points(
+    async fn list_token_tx_entry_points(
         &self,
         #[tool(param)]
         #[schemars(
@@ -134,7 +134,7 @@ impl AmburTokenMcp {
     }
 
     #[tool(description = "XXX TODO")]
-    async fn build_execute_msg(
+    async fn build_token_execute_msg(
         &self,
         #[tool(param)]
         #[schemars(description = "XXX TODO")]
