@@ -7,24 +7,17 @@ use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
 
 use ambur_wl_token::{
-    ExecuteMsg as ForesightExecuteMsg, 
-    Extension as ForesightExtension, 
+    ExecuteMsg as ForesightExecuteMsg, Extension as ForesightExtension,
     QueryMsg as ForesightQueryMsg,
 };
 use archies_token::{
-    ExecuteMsg as ArchiesExecuteMsg, 
-    Extension as ArchiesExtension,
-    QueryMsg as ArchiesQueryMsg,
+    ExecuteMsg as ArchiesExecuteMsg, Extension as ArchiesExtension, QueryMsg as ArchiesQueryMsg,
 };
 use derpies_token::{
-    ExecuteMsg as DerpiesExecuteMsg, 
-    Extension as DerpiesExtension,
-    QueryMsg as DerpiesQueryMsg
+    ExecuteMsg as DerpiesExecuteMsg, Extension as DerpiesExtension, QueryMsg as DerpiesQueryMsg,
 };
 use ghouls_token::{
-    ExecuteMsg as GhoulsExecuteMsg, 
-    Extension as GhoulsExtension,
-    QueryMsg as GhoulsQueryMsg,
+    ExecuteMsg as GhoulsExecuteMsg, Extension as GhoulsExtension, QueryMsg as GhoulsQueryMsg,
 };
 
 use crate::contract::*;
@@ -186,7 +179,7 @@ impl AmburTokenMcp {
             _ => None,
         };
         if schema.is_none() {
-            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft; 
+            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft;
             return Ok(CallToolResult::error(vec![Content::text(&err_msg)]));
         }
         let schema = schema.unwrap();
@@ -198,9 +191,7 @@ impl AmburTokenMcp {
     async fn build_query_msg(
         &self,
         #[tool(param)]
-        #[schemars(
-            description = "contract address of cw721 token"
-        )]
+        #[schemars(description = "contract address of cw721 token")]
         contract_addr: String,
         #[tool(param)]
         #[schemars(
@@ -246,7 +237,7 @@ impl AmburTokenMcp {
             _ => None,
         };
         if schema.is_none() {
-            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft; 
+            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft;
             return Ok(CallToolResult::error(vec![Content::text(&err_msg)]));
         }
         let schema = schema.unwrap();
@@ -258,14 +249,10 @@ impl AmburTokenMcp {
     async fn build_execute_msg(
         &self,
         #[tool(param)]
-        #[schemars(
-            description = "XXX TODO"
-        )]
+        #[schemars(description = "XXX TODO")]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(
-            description = "XXX TODO"
-        )]
+        #[schemars(description = "XXX TODO")]
         execute_msg: String,
     ) -> Result<CallToolResult, Error> {
         let deserialized: ExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
