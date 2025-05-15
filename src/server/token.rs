@@ -1,11 +1,3 @@
-use cosmwasm_std::{CosmosMsg, QueryRequest, WasmMsg, WasmQuery, to_json_binary};
-use rmcp::{
-    Error, ServerHandler, model::CallToolResult, model::Content, model::Implementation,
-    model::ProtocolVersion, model::ServerCapabilities, model::ServerInfo, tool,
-};
-use schemars::{JsonSchema, schema_for};
-use serde::{Deserialize, Serialize};
-
 use ambur_wl_token::{
     ExecuteMsg as ForesightExecuteMsg, Extension as ForesightExtension,
     QueryMsg as ForesightQueryMsg,
@@ -13,18 +5,23 @@ use ambur_wl_token::{
 use archies_token::{
     ExecuteMsg as ArchiesExecuteMsg, Extension as ArchiesExtension, QueryMsg as ArchiesQueryMsg,
 };
+use cosmwasm_std::{CosmosMsg, QueryRequest, WasmMsg, WasmQuery, to_json_binary};
 use derpies_token::{
     ExecuteMsg as DerpiesExecuteMsg, Extension as DerpiesExtension, QueryMsg as DerpiesQueryMsg,
 };
 use ghouls_token::{
     ExecuteMsg as GhoulsExecuteMsg, Extension as GhoulsExtension, QueryMsg as GhoulsQueryMsg,
 };
+use rmcp::{
+    Error, ServerHandler, model::CallToolResult, model::Content, model::Implementation,
+    model::ProtocolVersion, model::ServerCapabilities, model::ServerInfo, tool,
+};
+use schemars::{JsonSchema, schema_for};
+use serde::{Deserialize, Serialize};
 
-use crate::contract::*;
 use crate::execute::*;
-use crate::network::*;
-// XXX TODO: token_instruction::*
 use crate::query::ValidatedQuery;
+// XXX TODO: token_instruction::*
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub enum QueryMsg {
@@ -43,121 +40,12 @@ pub enum ExecuteMsg {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub struct AmburTokenMcp {
-    collections: Vec<AmburCollection>,
-}
+pub struct AmburTokenMcp {}
 
 #[tool(tool_box)]
 impl AmburTokenMcp {
     pub fn new() -> Self {
-        Self {
-            collections: vec![
-                AmburCollection {
-                    name: "Archies".to_string(),
-                    description: ARCHIES_DESCR.to_string(),
-                    contract_addresses: CollectionContract {
-                        token: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: TOKEN_ARCHIES_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: TOKEN_ARCHIES_CONSTANTINE.to_string(),
-                            },
-                        ],
-                        minter: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: MINTER_ARCHIES_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: MINTER_ARCHIES_CONSTANTINE.to_string(),
-                            },
-                        ],
-                    },
-                },
-                AmburCollection {
-                    name: "The Foresight Ticket".to_string(),
-                    description: FORESIGHT_DESCR.to_string(),
-                    contract_addresses: CollectionContract {
-                        token: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: TOKEN_FORESIGHT_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: TOKEN_FORESIGHT_CONSTANTINE.to_string(),
-                            },
-                        ],
-                        minter: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: MINTER_FORESIGHT_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: MINTER_FORESIGHT_CONSTANTINE.to_string(),
-                            },
-                        ],
-                    },
-                },
-                AmburCollection {
-                    name: "Derpies".to_string(),
-                    description: DERPIES_DESCR.to_string(),
-                    contract_addresses: CollectionContract {
-                        token: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: TOKEN_DERPIES_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: TOKEN_DERPIES_CONSTANTINE.to_string(),
-                            },
-                        ],
-                        minter: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: MINTER_DERPIES_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: MINTER_DERPIES_CONSTANTINE.to_string(),
-                            },
-                        ],
-                    },
-                },
-                AmburCollection {
-                    name: "Ghouls".to_string(),
-                    description: GHOULS_DESCR.to_string(),
-                    contract_addresses: CollectionContract {
-                        token: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: TOKEN_GHOULS_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: TOKEN_GHOULS_CONSTANTINE.to_string(),
-                            },
-                        ],
-                        minter: [
-                            AmburContract {
-                                network: ArchwayNetwork::Mainnet,
-                                contract_address: MINTER_GHOULS_MAINNET.to_string(),
-                            },
-                            AmburContract {
-                                network: ArchwayNetwork::Constantine,
-                                contract_address: MINTER_GHOULS_CONSTANTINE.to_string(),
-                            },
-                        ],
-                    },
-                },
-            ],
-        }
+        Self {}
     }
 
     // Query entry point tools
