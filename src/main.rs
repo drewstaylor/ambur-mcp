@@ -12,11 +12,11 @@ use crate::server::ambur::AmburMcp;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn StdError>> {
-    let mcp_server = AmburMcp::new().serve(stdio()).await.inspect_err(|e| {
+    let ambur_mcp = AmburMcp::new().serve(stdio()).await.inspect_err(|e| {
         println!("{e}");
     })?;
 
-    mcp_server.waiting().await?;
+    ambur_mcp.waiting().await?;
 
     Ok(())
 }
