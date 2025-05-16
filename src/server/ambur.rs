@@ -11,8 +11,8 @@ use crate::contract::*;
 use crate::execute::*;
 use crate::instruction::*;
 use crate::network::*;
-use crate::server::token::*;
 use crate::query::{AllResponse as AllQueryResponse, ValidatedQuery};
+use crate::server::token::*;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct AmburMcp {
@@ -259,7 +259,9 @@ impl AmburMcp {
     }
 
     // cw721 Query entry point tools
-    #[tool(description = "List all contract query entry points for a cw721 token that can be traded on Ambur")]
+    #[tool(
+        description = "List all contract query entry points for a cw721 token that can be traded on Ambur"
+    )]
     async fn list_token_query_entry_points(
         &self,
         #[tool(param)]
@@ -304,45 +306,50 @@ impl AmburMcp {
     ) -> Result<CallToolResult, Error> {
         let query_req: Option<QueryRequest> = match nft.to_lowercase().as_str() {
             "archies" => {
-                let deserialized: ArchiesQueryMsg<ArchiesExtension> = serde_json::from_str(query_msg.as_str()).unwrap();
+                let deserialized: ArchiesQueryMsg<ArchiesExtension> =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
                 });
                 Some(query_req)
-            },
+            }
             "derpies" => {
-                let deserialized: DerpiesQueryMsg<DerpiesExtension> = serde_json::from_str(query_msg.as_str()).unwrap();
+                let deserialized: DerpiesQueryMsg<DerpiesExtension> =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
                 });
                 Some(query_req)
-            },
+            }
             "ghouls" => {
-                let deserialized: GhoulsQueryMsg<GhoulsExtension> = serde_json::from_str(query_msg.as_str()).unwrap();
+                let deserialized: GhoulsQueryMsg<GhoulsExtension> =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
                 });
                 Some(query_req)
-            },
+            }
             "foresight" => {
-                let deserialized: ForesightQueryMsg<ForesightExtension> = serde_json::from_str(query_msg.as_str()).unwrap();
+                let deserialized: ForesightQueryMsg<ForesightExtension> =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
                 });
                 Some(query_req)
-            },
+            }
             "the foresight ticket" => {
-                let deserialized: ForesightQueryMsg<ForesightExtension> = serde_json::from_str(query_msg.as_str()).unwrap();
+                let deserialized: ForesightQueryMsg<ForesightExtension> =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
                 });
                 Some(query_req)
-            },
+            }
             _ => None,
         };
         if query_req.is_none() {
@@ -365,7 +372,9 @@ impl AmburMcp {
     }
 
     // cw721 Execute entry point tools
-    #[tool(description = "List all execute entry points (txs) that can be made to a cw721 contract for an NFT collection that can be traded on Ambur")]
+    #[tool(
+        description = "List all execute entry points (txs) that can be made to a cw721 contract for an NFT collection that can be traded on Ambur"
+    )]
     async fn list_token_tx_entry_points(
         &self,
         #[tool(param)]
@@ -391,7 +400,9 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    #[tool(description = "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur")]
+    #[tool(
+        description = "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur"
+    )]
     async fn build_token_execute_msg(
         &self,
         #[tool(param)]
@@ -403,12 +414,15 @@ impl AmburMcp {
         #[schemars(description = "contract address of cw721 token")]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg")]
+        #[schemars(
+            description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg"
+        )]
         execute_msg: String,
     ) -> Result<CallToolResult, Error> {
         let cosmos_msg: Option<CosmosMsg> = match nft.to_lowercase().as_str() {
             "archies" => {
-                let deserialized: ArchiesExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let deserialized: ArchiesExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
@@ -416,9 +430,10 @@ impl AmburMcp {
                 }
                 .into();
                 Some(cosmos_msg)
-            },
+            }
             "derpies" => {
-                let deserialized: DerpiesExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let deserialized: DerpiesExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
@@ -426,9 +441,10 @@ impl AmburMcp {
                 }
                 .into();
                 Some(cosmos_msg)
-            },
+            }
             "ghouls" => {
-                let deserialized: GhoulsExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let deserialized: GhoulsExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
@@ -436,9 +452,10 @@ impl AmburMcp {
                 }
                 .into();
                 Some(cosmos_msg)
-            },
+            }
             "foresight" => {
-                let deserialized: ForesightExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let deserialized: ForesightExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
@@ -446,9 +463,10 @@ impl AmburMcp {
                 }
                 .into();
                 Some(cosmos_msg)
-            },
+            }
             "the foresight ticket" => {
-                let deserialized: ForesightExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let deserialized: ForesightExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
@@ -456,7 +474,7 @@ impl AmburMcp {
                 }
                 .into();
                 Some(cosmos_msg)
-            },
+            }
             _ => None,
         };
         if cosmos_msg.is_none() {
