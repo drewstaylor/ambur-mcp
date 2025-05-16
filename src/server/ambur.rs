@@ -259,7 +259,7 @@ impl AmburMcp {
     }
 
     // cw721 Query entry point tools
-    #[tool(description = "XXX TODO")]
+    #[tool(description = "List all contract query entry points for a cw721 token that can be traded on Ambur")]
     async fn list_token_query_entry_points(
         &self,
         #[tool(param)]
@@ -285,7 +285,7 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    #[tool(description = "XXX TODO")]
+    #[tool(description = "Build a contract query for a cw721 token that can be traded on Ambur")]
     async fn build_token_query_msg(
         &self,
         #[tool(param)]
@@ -365,7 +365,7 @@ impl AmburMcp {
     }
 
     // cw721 Execute entry point tools
-    #[tool(description = "XXX TODO")]
+    #[tool(description = "List all execute entry points (txs) that can be made to a cw721 contract for an NFT collection that can be traded on Ambur")]
     async fn list_token_tx_entry_points(
         &self,
         #[tool(param)]
@@ -391,23 +391,79 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    #[tool(description = "XXX TODO")]
+    #[tool(description = "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur")]
     async fn build_token_execute_msg(
         &self,
         #[tool(param)]
-        #[schemars(description = "XXX TODO")]
+        #[schemars(
+            description = "name of the NFT collection (e.g. \"archies\", \"the foresight ticket\", \"derpies\", \"ghouls\")"
+        )]
+        nft: String,
+        #[tool(param)]
+        #[schemars(description = "contract address of cw721 token")]
         contract_addr: String,
         #[tool(param)]
-        #[schemars(description = "XXX TODO")]
+        #[schemars(description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg")]
         execute_msg: String,
     ) -> Result<CallToolResult, Error> {
-        let deserialized: TokenExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
-        let cosmos_msg: CosmosMsg = WasmMsg::Execute {
-            contract_addr,
-            msg: to_json_binary(&deserialized).unwrap_or_default(),
-            funds: vec![],
+        let cosmos_msg: Option<CosmosMsg> = match nft.to_lowercase().as_str() {
+            "archies" => {
+                let deserialized: ArchiesExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            },
+            "derpies" => {
+                let deserialized: DerpiesExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            },
+            "ghouls" => {
+                let deserialized: GhoulsExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            },
+            "foresight" => {
+                let deserialized: ForesightExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            },
+            "the foresight ticket" => {
+                let deserialized: ForesightExecuteMsg = serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            },
+            _ => None,
+        };
+        if cosmos_msg.is_none() {
+            return Ok(CallToolResult::error(vec![Content::text(
+                "Error deserializing execute_msg to ExecuteMsg",
+            )]));
         }
-        .into();
         let serialized_cosmos_msg = serde_json::to_string(&cosmos_msg);
         if serialized_cosmos_msg.is_err() {
             return Ok(CallToolResult::error(vec![Content::text(
