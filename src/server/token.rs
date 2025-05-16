@@ -12,21 +12,3 @@ pub use derpies_token::{
 pub use ghouls_token::{
     ExecuteMsg as GhoulsExecuteMsg, Extension as GhoulsExtension, QueryMsg as GhoulsQueryMsg,
 };
-use schemars::JsonSchema;
-use serde::{Deserialize, Serialize};
-
-// #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-// pub enum TokenQueryMsg {
-//     ArchiesQueryMsg,
-//     ForesightQueryMsg,
-//     DerpiesQueryMsg,
-//     GhoulsQueryMsg,
-// }
-
-#[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
-pub enum TokenExecuteMsg {
-    ArchiesExecuteMsg,
-    ForesightExecuteMsg,
-    DerpiesExecuteMsg,
-    GhoulsExecuteMsg,
-}
