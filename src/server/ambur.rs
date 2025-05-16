@@ -274,8 +274,7 @@ impl AmburMcp {
             "archies" => Some(schema_for!(ArchiesQueryMsg<ArchiesExtension>)),
             "derpies" => Some(schema_for!(DerpiesQueryMsg<DerpiesExtension>)),
             "ghouls" => Some(schema_for!(GhoulsQueryMsg<GhoulsExtension>)),
-            "foresight" => Some(schema_for!(ForesightQueryMsg<ForesightExtension>)),
-            "the foresight ticket" => Some(schema_for!(ForesightQueryMsg<ForesightExtension>)),
+            "foresight" | "the foresight ticket" => Some(schema_for!(ForesightQueryMsg<ForesightExtension>)),
             _ => None,
         };
         if schema.is_none() {
@@ -332,16 +331,7 @@ impl AmburMcp {
                 });
                 Some(query_req)
             }
-            "foresight" => {
-                let deserialized: ForesightQueryMsg<ForesightExtension> =
-                    serde_json::from_str(query_msg.as_str()).unwrap();
-                let query_req = QueryRequest::Wasm(WasmQuery::Smart {
-                    contract_addr,
-                    msg: to_json_binary(&deserialized).unwrap_or_default(),
-                });
-                Some(query_req)
-            }
-            "the foresight ticket" => {
+            "foresight" | "the foresight ticket" => {
                 let deserialized: ForesightQueryMsg<ForesightExtension> =
                     serde_json::from_str(query_msg.as_str()).unwrap();
                 let query_req = QueryRequest::Wasm(WasmQuery::Smart {
@@ -387,8 +377,7 @@ impl AmburMcp {
             "archies" => Some(schema_for!(ArchiesExecuteMsg)),
             "derpies" => Some(schema_for!(DerpiesExecuteMsg)),
             "ghouls" => Some(schema_for!(GhoulsExecuteMsg)),
-            "foresight" => Some(schema_for!(ForesightExecuteMsg)),
-            "the foresight ticket" => Some(schema_for!(ForesightExecuteMsg)),
+            "foresight" | "the foresight ticket" => Some(schema_for!(ForesightExecuteMsg)),
             _ => None,
         };
         if schema.is_none() {
@@ -453,18 +442,7 @@ impl AmburMcp {
                 .into();
                 Some(cosmos_msg)
             }
-            "foresight" => {
-                let deserialized: ForesightExecuteMsg =
-                    serde_json::from_str(execute_msg.as_str()).unwrap();
-                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
-                    contract_addr,
-                    msg: to_json_binary(&deserialized).unwrap_or_default(),
-                    funds: vec![],
-                }
-                .into();
-                Some(cosmos_msg)
-            }
-            "the foresight ticket" => {
+            "foresight" | "the foresight ticket" => {
                 let deserialized: ForesightExecuteMsg =
                     serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
