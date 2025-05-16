@@ -274,7 +274,9 @@ impl AmburMcp {
             "archies" => Some(schema_for!(ArchiesQueryMsg<ArchiesExtension>)),
             "derpies" => Some(schema_for!(DerpiesQueryMsg<DerpiesExtension>)),
             "ghouls" => Some(schema_for!(GhoulsQueryMsg<GhoulsExtension>)),
-            "foresight" | "the foresight ticket" => Some(schema_for!(ForesightQueryMsg<ForesightExtension>)),
+            "foresight" | "the foresight ticket" => {
+                Some(schema_for!(ForesightQueryMsg<ForesightExtension>))
+            }
             _ => None,
         };
         if schema.is_none() {
