@@ -3,7 +3,7 @@
 MCP server in Rust, for wrapping Ambur query and execute entry point messages to be broadcast by a signer.
 
 ### Configuring dependencies
-Some dependencies in `Cargo.toml` are provided by GitHub repositories. Public repositories will require no extra configuration, but private repositories need to be cloned into the `./packages` folder. Building this project requires that all GitHub dependencies from private repositories must cloned into `./packages` and built.
+Some dependencies in `Cargo.toml` are provided by GitHub repositories. Public repositories will require no extra configuration, but private repositories must be cloned into the `./packages` folder. This project will not compile unless all GitHub dependencies from private repositories are cloned into `./packages`.
 
 ### Building this project
 
