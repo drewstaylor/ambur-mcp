@@ -462,12 +462,15 @@ to tool in string format. For example, use stringified JSON for the `execute_msg
 `payment` calling parameters."#;
 
 // NFT Query
-pub static LIST_TOKEN_QUERY_ENTRY_POINTS_DESCR: &str = "List all contract query entry points for a cw721 token that can be traded on Ambur";
-pub static BUILD_TOKEN_QUERY_MSG_DESCR: &str = "Build a contract query for a cw721 token that can be traded on Ambur";
+pub static LIST_TOKEN_QUERY_ENTRY_POINTS_DESCR: &str =
+    "List all contract query entry points for a cw721 token that can be traded on Ambur";
+pub static BUILD_TOKEN_QUERY_MSG_DESCR: &str =
+    "Build a contract query for a cw721 token that can be traded on Ambur";
 
 // NFT Execute
 pub static LIST_TOKEN_TX_ENTRY_POINTS_DESCR: &str = "List all execute entry points (txs) that can be made to a cw721 contract for an NFT collection that can be traded on Ambur";
-pub static BUILD_TOKEN_EXECUTE_MSG_DESCR: &str = "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur";
+pub static BUILD_TOKEN_EXECUTE_MSG_DESCR: &str =
+    "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur";
 
 // Minter Query
 
