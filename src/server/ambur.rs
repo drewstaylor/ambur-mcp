@@ -259,9 +259,7 @@ impl AmburMcp {
     }
 
     // cw721 Query entry point tools
-    #[tool(
-        description = "List all contract query entry points for a cw721 token that can be traded on Ambur"
-    )]
+    #[tool(description = LIST_TOKEN_QUERY_ENTRY_POINTS_DESCR)]
     async fn list_token_query_entry_points(
         &self,
         #[tool(param)]
@@ -288,7 +286,7 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    #[tool(description = "Build a contract query for a cw721 token that can be traded on Ambur")]
+    #[tool(description = BUILD_TOKEN_QUERY_MSG_DESCR)]
     async fn build_token_query_msg(
         &self,
         #[tool(param)]
@@ -364,9 +362,7 @@ impl AmburMcp {
     }
 
     // cw721 Execute entry point tools
-    #[tool(
-        description = "List all execute entry points (txs) that can be made to a cw721 contract for an NFT collection that can be traded on Ambur"
-    )]
+    #[tool(description = LIST_TOKEN_TX_ENTRY_POINTS_DESCR)]
     async fn list_token_tx_entry_points(
         &self,
         #[tool(param)]
@@ -391,9 +387,7 @@ impl AmburMcp {
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
 
-    #[tool(
-        description = "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur"
-    )]
+    #[tool(description = BUILD_TOKEN_EXECUTE_MSG_DESCR)]
     async fn build_token_execute_msg(
         &self,
         #[tool(param)]
