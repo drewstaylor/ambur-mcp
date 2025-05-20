@@ -473,5 +473,11 @@ pub static BUILD_TOKEN_EXECUTE_MSG_DESCR: &str =
     "Build an execute message (tx) for a cw721 contract of a token that can be traded on Ambur";
 
 // Minter Query
+pub static LIST_MINTER_QUERY_ENTRY_POINTS_DESCR: &str = "List all contract query entry points for the minter contract of a cw721 token that can be traded on Ambur";
+pub static BUILD_MINTER_QUERY_MSG_DESCR: &str =
+    "Build a contract query for the minter contract of a cw721 token that can be traded on Ambur";
 
 // Minter Execute
+pub static LIST_MINTER_TX_ENTRY_POINTS_DESCR: &str = "List all execute entry points (txs) that can be made to the minter contract for an NFT collection that can be traded on Ambur";
+pub static BUILD_MINTER_EXECUTE_MSG_DESCR: &str =
+    "Build an execute message (tx) for the minter contract of a token that can be traded on Ambur";
