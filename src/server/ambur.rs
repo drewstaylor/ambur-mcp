@@ -485,9 +485,7 @@ impl AmburMcp {
             "archies" => Some(schema_for!(ArchiesMinterQueryMsg)),
             "derpies" => Some(schema_for!(DerpiesMinterQueryMsg)),
             "ghouls" => Some(schema_for!(GhoulsMinterQueryMsg)),
-            "foresight" | "the foresight ticket" => {
-                Some(schema_for!(ForesightMinterQueryMsg))
-            }
+            "foresight" | "the foresight ticket" => Some(schema_for!(ForesightMinterQueryMsg)),
             _ => None,
         };
         if schema.is_none() {
@@ -498,7 +496,7 @@ impl AmburMcp {
         let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
         Ok(CallToolResult::success(vec![Content::text(serialized)]))
     }
-    
+
     #[tool(description = BUILD_MINTER_QUERY_MSG_DESCR)]
     async fn build_minter_query_msg(
         &self,
