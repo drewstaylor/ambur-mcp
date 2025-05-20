@@ -12,6 +12,7 @@ use crate::execute::*;
 use crate::instruction::*;
 use crate::network::*;
 use crate::query::{AllResponse as AllQueryResponse, ValidatedQuery};
+use crate::server::minter::*;
 use crate::server::token::*;
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -440,6 +441,218 @@ impl AmburMcp {
             }
             "foresight" | "the foresight ticket" => {
                 let deserialized: ForesightExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            }
+            _ => None,
+        };
+        if cosmos_msg.is_none() {
+            return Ok(CallToolResult::error(vec![Content::text(
+                "Error deserializing execute_msg to ExecuteMsg",
+            )]));
+        }
+        let serialized_cosmos_msg = serde_json::to_string(&cosmos_msg);
+        if serialized_cosmos_msg.is_err() {
+            return Ok(CallToolResult::error(vec![Content::text(
+                "Error wrapping ExecuteMsg as CosmosMsg",
+            )]));
+        }
+        let valid_execute = ValidatedExecute {
+            execute_msg,
+            cosmos_msg: serialized_cosmos_msg.unwrap_or_default(),
+        };
+        let serialized: String = serde_json::to_string(&valid_execute).unwrap_or_default();
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+
+    // Minter Query entry point tools
+    #[tool(description = LIST_MINTER_QUERY_ENTRY_POINTS_DESCR)]
+    async fn list_minter_query_entry_points(
+        &self,
+        #[tool(param)]
+        #[schemars(
+            description = "name of the NFT collection (e.g. \"archies\", \"the foresight ticket\", \"derpies\", \"ghouls\")"
+        )]
+        nft: String,
+    ) -> Result<CallToolResult, Error> {
+        let schema = match nft.to_lowercase().as_str() {
+            "archies" => Some(schema_for!(ArchiesMinterQueryMsg)),
+            "derpies" => Some(schema_for!(DerpiesMinterQueryMsg)),
+            "ghouls" => Some(schema_for!(GhoulsMinterQueryMsg)),
+            "foresight" | "the foresight ticket" => {
+                Some(schema_for!(ForesightMinterQueryMsg))
+            }
+            _ => None,
+        };
+        if schema.is_none() {
+            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft;
+            return Ok(CallToolResult::error(vec![Content::text(&err_msg)]));
+        }
+        let schema = schema.unwrap();
+        let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+    
+    #[tool(description = BUILD_MINTER_QUERY_MSG_DESCR)]
+    async fn build_minter_query_msg(
+        &self,
+        #[tool(param)]
+        #[schemars(
+            description = "name of the NFT collection (e.g. \"archies\", \"the foresight ticket\", \"derpies\", \"ghouls\")"
+        )]
+        nft: String,
+        #[tool(param)]
+        #[schemars(description = "contract address of minter contract")]
+        contract_addr: String,
+        #[tool(param)]
+        #[schemars(
+            description = "JSON stringified QueryMsg variant needed for building the query as a Cosmos SDK QueryRequest"
+        )]
+        query_msg: String,
+    ) -> Result<CallToolResult, Error> {
+        let query_req: Option<QueryRequest> = match nft.to_lowercase().as_str() {
+            "archies" => {
+                let deserialized: ArchiesMinterQueryMsg =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
+                let query_req = QueryRequest::Wasm(WasmQuery::Smart {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                });
+                Some(query_req)
+            }
+            "derpies" => {
+                let deserialized: DerpiesMinterQueryMsg =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
+                let query_req = QueryRequest::Wasm(WasmQuery::Smart {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                });
+                Some(query_req)
+            }
+            "ghouls" => {
+                let deserialized: GhoulsMinterQueryMsg =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
+                let query_req = QueryRequest::Wasm(WasmQuery::Smart {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                });
+                Some(query_req)
+            }
+            "foresight" | "the foresight ticket" => {
+                let deserialized: ForesightMinterQueryMsg =
+                    serde_json::from_str(query_msg.as_str()).unwrap();
+                let query_req = QueryRequest::Wasm(WasmQuery::Smart {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                });
+                Some(query_req)
+            }
+            _ => None,
+        };
+        if query_req.is_none() {
+            return Ok(CallToolResult::error(vec![Content::text(
+                "Error deserializing token QueryMsg",
+            )]));
+        }
+        let serialized_query_req = serde_json::to_string(&query_req);
+        if serialized_query_req.is_err() {
+            return Ok(CallToolResult::error(vec![Content::text(
+                "Error wrapping token QueryMsg as QueryRequest",
+            )]));
+        }
+        let valid_query = ValidatedQuery {
+            query_msg,
+            query_request: serialized_query_req.unwrap_or_default(),
+        };
+        let serialized: String = serde_json::to_string(&valid_query).unwrap_or_default();
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+
+    // Minter Execute entry point tools
+    #[tool(description = LIST_MINTER_TX_ENTRY_POINTS_DESCR)]
+    async fn list_minter_tx_entry_points(
+        &self,
+        #[tool(param)]
+        #[schemars(
+            description = "name of the NFT collection (e.g. \"archies\", \"the foresight ticket\", \"derpies\", \"ghouls\")"
+        )]
+        nft: String,
+    ) -> Result<CallToolResult, Error> {
+        let schema = match nft.to_lowercase().as_str() {
+            "archies" => Some(schema_for!(ArchiesMinterExecuteMsg)),
+            "derpies" => Some(schema_for!(DerpiesMinterExecuteMsg)),
+            "ghouls" => Some(schema_for!(GhoulsMinterExecuteMsg)),
+            "foresight" | "the foresight ticket" => Some(schema_for!(ForesightMinterExecuteMsg)),
+            _ => None,
+        };
+        if schema.is_none() {
+            let err_msg = "Unrecognized NFT collection name ".to_string() + &nft;
+            return Ok(CallToolResult::error(vec![Content::text(&err_msg)]));
+        }
+        let schema = schema.unwrap();
+        let serialized: String = serde_json::to_string(&schema).unwrap_or("".to_string());
+        Ok(CallToolResult::success(vec![Content::text(serialized)]))
+    }
+
+    #[tool(description = BUILD_MINTER_EXECUTE_MSG_DESCR)]
+    async fn build_minter_execute_msg(
+        &self,
+        #[tool(param)]
+        #[schemars(
+            description = "name of the NFT collection (e.g. \"archies\", \"the foresight ticket\", \"derpies\", \"ghouls\")"
+        )]
+        nft: String,
+        #[tool(param)]
+        #[schemars(description = "contract address of minter contract")]
+        contract_addr: String,
+        #[tool(param)]
+        #[schemars(
+            description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg"
+        )]
+        execute_msg: String,
+    ) -> Result<CallToolResult, Error> {
+        let cosmos_msg: Option<CosmosMsg> = match nft.to_lowercase().as_str() {
+            "archies" => {
+                let deserialized: ArchiesMinterExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            }
+            "derpies" => {
+                let deserialized: DerpiesMinterExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            }
+            "ghouls" => {
+                let deserialized: GhoulsMinterExecuteMsg =
+                    serde_json::from_str(execute_msg.as_str()).unwrap();
+                let cosmos_msg: CosmosMsg = WasmMsg::Execute {
+                    contract_addr,
+                    msg: to_json_binary(&deserialized).unwrap_or_default(),
+                    funds: vec![],
+                }
+                .into();
+                Some(cosmos_msg)
+            }
+            "foresight" | "the foresight ticket" => {
+                let deserialized: ForesightMinterExecuteMsg =
                     serde_json::from_str(execute_msg.as_str()).unwrap();
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
