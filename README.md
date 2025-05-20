@@ -24,6 +24,26 @@ cargo build
 cargo build --release
 ```
 
+### Tools provided by this MCP server
+
+This MCP server provides the following 15 tools and functionality.
+
+1. `list_contract_deployments` - Lists Ambur core contract addresses (mainnet and testnet)
+2. `list_nft_collections` - Lists Ambur NFTs (mainnet and testnet contract addresses, collection name, and collection description)
+3. `list_query_entry_points` - Lists the queries that can be made to the core Ambur marketplace contract
+4. `list_query_responses` - Lists the detailed response data that can be fetched from the queries that can be made to the core Ambur marketplace contract
+5. `build_query_msg` - Build a query to the core Ambur marketplace contract, that can be broadcast by an RPC connected wallet
+6. `list_tx_entry_points` - Lists the transactions that can be made to the core Ambur marketplace contract
+7. `build_execute_msg` - Build a transaction to the core Ambur marketplace contract, that can be signed and broadcast by an RPC connected wallet
+8. `list_token_query_entry_points` - Lists the queries that can be made to an NFT token that can be traded on Ambur (e.g. Archies, Derpies, Foresight and Ghouls)
+9. `build_token_query_msg` - Build a query to an NFT token that can be traded on Ambur (e.g. Archies, Derpies, Foresight and Ghouls), that can be broadcast by an RPC connected wallet
+10. `list_token_tx_entry_points` - Lists the transactions that can be made to an NFT token that can be traded on Ambur (e.g. Archies, Derpies, Foresight and Ghouls)
+11. `build_token_execute_msg` - Build a transaction to an NFT token that can be traded on Ambur (e.g. Archies, Derpies, Foresight and Ghouls), that can be broadcast by an RPC connected wallet
+12. `list_minter_query_entry_points` - Lists the queries that can be made to a minter contract for an NFT that can be traded on Ambur (e.g. Archies minter, Derpies minter, Foresight minter and Ghouls minter)
+13. `build_minter_query_msg` - Build a query to a minter contract for an NFT token that can be traded on Ambur (e.g. Archies minter, Derpies minter, Foresight minter and Ghouls minter), that can be broadcast by an RPC connected wallet
+14. `list_minter_tx_entry_points` - Lists the transactions that can be made to a minter contract for an NFT token that can be traded on Ambur (e.g. Archies minter, Derpies minter, Foresight minter and Ghouls minter)
+15. `build_minter_execute_msg` - Build a transaction to a minter contract for an NFT token that can be traded on Ambur (e.g. Archies minter, Derpies minter, Foresight minter and Ghouls minter), that can be broadcast by an RPC connected wallet
+
 ### Connecting MCP to Claude Desktop
 
 For default setups, build a release binary and point the mcp server's `command` to its path. No run arguments (`args`) are required:
