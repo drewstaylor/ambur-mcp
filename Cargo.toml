@@ -4,14 +4,22 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+anyhow = "1.0"
+axum = { version = "0.8", features = ["macros"] }
 cosmwasm-std = "2.2.2"
 philabs-cw721-marketplace = { path = "./packages/philabs-cw721-marketplace", features = ["library"] }
-#rmcp = { version = "0.1.5", features = ["transport-io"] }
-rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk", branch = "main", features = ["transport-io"] }
+rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk", branch = "main", features = ["transport-sse-server"] }
 schemars = "0.8.22"
 serde = "1.0.219"
 serde_json = "1.0.140"
 tokio = { version = "1.44.2", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = [
+    "env-filter",
+    "std",
+    "fmt",
+] }
 
 # cw721 tokens
 ambur-wl-token = { path = "./packages/ambur-whitelist-ticket/contracts/token", features = ["library"] }
