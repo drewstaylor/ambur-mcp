@@ -6,7 +6,7 @@ pub mod query;
 pub mod server;
 
 use anyhow::Result;
-use rmcp::transport::sse_server::{SseServer, SseServerConfig};
+use rmcp::transport::streamable_http_server::axum::StreamableHttpServer;
 use tracing_subscriber::{
     layer::SubscriberExt,
     util::SubscriberInitExt,
@@ -19,7 +19,6 @@ const BIND_ADDRESS: &str = "127.0.0.1:8000";
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Debugging traces
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -28,31 +27,10 @@ async fn main() -> Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // Configure SSE
-    let config = SseServerConfig {
-        bind: BIND_ADDRESS.parse()?,
-        sse_path: "/".to_string(),
-        post_path: "/".to_string(),
-        ct: tokio_util::sync::CancellationToken::new(),
-        sse_keep_alive: None,
-    };
+    let ct = StreamableHttpServer::serve(BIND_ADDRESS.parse()?)
+        .await?
+        .with_service(AmburMcp::new);
 
-    // Server startup
-    let (sse_server, router) = SseServer::new(config);
-    let listener = tokio::net::TcpListener::bind(sse_server.config.bind).await?;
-    let ct = sse_server.config.ct.child_token();
-    let server = axum::serve(listener, router).with_graceful_shutdown(async move {
-        ct.cancelled().await;
-        tracing::info!("sse server cancelled");
-    });
-    tokio::spawn(async move {
-        if let Err(e) = server.await {
-            tracing::error!(error = %e, "sse server shutdown with error");
-        }
-    });
-
-    // Request management (CancellationToken)
-    let ct = sse_server.with_service(AmburMcp::new);
     tokio::signal::ctrl_c().await?;
     ct.cancel();
 
