@@ -31,8 +31,8 @@ async fn main() -> Result<()> {
     // Configure SSE
     let config = SseServerConfig {
         bind: BIND_ADDRESS.parse()?,
-        sse_path: "/sse".to_string(),
-        post_path: "/message".to_string(),
+        sse_path: "/".to_string(),
+        post_path: "/".to_string(),
         ct: tokio_util::sync::CancellationToken::new(),
         sse_keep_alive: None,
     };
