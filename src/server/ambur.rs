@@ -1,4 +1,4 @@
-use cosmwasm_std::{Coin, CosmosMsg, QueryRequest, WasmMsg, WasmQuery, to_json_binary};
+use cosmwasm_std::{Coin, CosmosMsg, QueryRequest, Uint128, WasmMsg, WasmQuery, to_json_binary};
 use philabs_cw721_marketplace::msg::{ExecuteMsg, QueryMsg};
 use rmcp::{
     Error, ServerHandler, model::CallToolResult, model::Content, model::Implementation,
@@ -6,6 +6,7 @@ use rmcp::{
 };
 use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 
 use crate::contract::*;
 use crate::execute::*;
@@ -230,11 +231,18 @@ impl AmburMcp {
             description = "Optionally include native payment funds to be sent in the transaction (only required for 'finish' txs if payment_token is a native token)"
         )]
         payment: Option<String>,
+        #[tool(param)]
+        #[schemars(
+            description = "Optionally include native payment denom for funds being sent in the transaction (required for any transactions that require native denom payments; e.g. not cw20 payments)"
+        )]
+        payment_denom: Option<String>,
     ) -> Result<CallToolResult, Error> {
-        let funds: Vec<Coin> = if payment.is_some() {
-            let deserialized: Coin =
-                serde_json::from_str(payment.unwrap().as_str()).unwrap_or_default();
-            vec![deserialized]
+        let funds: Vec<Coin> = if payment.is_some() && payment_denom.is_some() {
+            let funds = Coin {
+                denom: payment_denom.unwrap_or_default(),
+                amount: Uint128::from_str(payment.unwrap_or_default().as_str()).unwrap_or_default(),
+            };
+            vec![funds]
         } else {
             vec![]
         };
@@ -614,7 +622,26 @@ impl AmburMcp {
             description = "ExecuteMsg variant and its values needed for building the transaction as a Cosmos SDK CosmosMsg"
         )]
         execute_msg: String,
+        #[tool(param)]
+        #[schemars(
+            description = "Optionally include native payment funds to be sent in the transaction (only required for mint)"
+        )]
+        payment: Option<String>,
+        #[tool(param)]
+        #[schemars(
+            description = "Optionally include native payment denom for funds being sent in the transaction (required for any transactions that require native denom payments; e.g. not cw20 payments)"
+        )]
+        payment_denom: Option<String>,
     ) -> Result<CallToolResult, Error> {
+        let funds: Vec<Coin> = if payment.is_some() && payment_denom.is_some() {
+            let funds = Coin {
+                denom: payment_denom.unwrap_or_default(),
+                amount: Uint128::from_str(payment.unwrap_or_default().as_str()).unwrap_or_default(),
+            };
+            vec![funds]
+        } else {
+            vec![]
+        };
         let cosmos_msg: Option<CosmosMsg> = match nft.to_lowercase().as_str() {
             "archies" => {
                 let deserialized: ArchiesMinterExecuteMsg =
@@ -622,7 +649,7 @@ impl AmburMcp {
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
-                    funds: vec![],
+                    funds,
                 }
                 .into();
                 Some(cosmos_msg)
@@ -633,7 +660,7 @@ impl AmburMcp {
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
-                    funds: vec![],
+                    funds,
                 }
                 .into();
                 Some(cosmos_msg)
@@ -644,7 +671,7 @@ impl AmburMcp {
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
-                    funds: vec![],
+                    funds,
                 }
                 .into();
                 Some(cosmos_msg)
@@ -655,7 +682,7 @@ impl AmburMcp {
                 let cosmos_msg: CosmosMsg = WasmMsg::Execute {
                     contract_addr,
                     msg: to_json_binary(&deserialized).unwrap_or_default(),
-                    funds: vec![],
+                    funds,
                 }
                 .into();
                 Some(cosmos_msg)
