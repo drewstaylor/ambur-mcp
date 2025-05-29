@@ -13,14 +13,13 @@ serde_json = "1.0.140"
 tokio = { version = "1.44.2", features = ["full"] }
 
 # cw721 tokens
-ambur-wl-token = { path = "./packages/ambur-whitelist-ticket/contracts/token", features = ["library"] }
+ambur-wl-token = { git = "ssh://git@github.com/phi-labs-ltd/ambur-whitelist-ticket.git", version = "0.1.1" }
 archies-token = { git = "https://github.com/phi-labs-ltd/archies-token.git", version = "0.1.0", features = ["library"] }
-derpies-token = { path = "./packages/derpies-minter/contracts/token", features = ["library"] }
+derpies-token = { git = "ssh://git@github.com/phi-labs-ltd/derpies-minter.git", version = "0.1.0", features = ["library"] }
 ghouls-token = { git = "https://github.com/phi-labs-ltd/ghouls-token.git", version = "0.1.0", features = ["library"] }
 
 # cw721 minters
-ambur-wl-minter = { path = "./packages/ambur-whitelist-ticket/contracts/minter", features = ["library"] }
-derpies-minter = { path = "./packages/derpies-minter/contracts/minter", features = ["library"] }
-ghouls-minter = { path = "./packages/ghouls-minter", features = ["library"] }
-
+ambur-wl-minter = { git = "ssh://git@github.com/phi-labs-ltd/ambur-whitelist-ticket.git", version = "1.1.3", features = ["library"] }
+derpies-minter = { git = "ssh://git@github.com/phi-labs-ltd/derpies-minter.git", version = "1.1.3", features = ["library"] }
+ghouls-minter = { git = "ssh://git@github.com/phi-labs-ltd/ghouls-minter.git", version = "0.2.6", features = ["library"] }
 whitelist-minter = { git = "ssh://git@github.com/phi-labs-ltd/archies-whitelist-minter.git", version = "1.0.1", features = ["library"] }
