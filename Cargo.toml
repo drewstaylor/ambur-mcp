@@ -5,7 +5,7 @@ edition = "2024"
 
 [dependencies]
 cosmwasm-std = "2.2.2"
-philabs-cw721-marketplace = { path = "./packages/philabs-cw721-marketplace", features = ["library"] }
+philabs-cw721-marketplace = { git = "ssh://git@github.com/phi-labs-ltd/philabs-cw721-marketplace.git", version = "2.1.1", features = ["library"] }
 rmcp = { version = "0.1.5", features = ["transport-io"] }
 schemars = "0.8.22"
 serde = "1.0.219"
@@ -22,4 +22,5 @@ ghouls-token = { git = "https://github.com/phi-labs-ltd/ghouls-token.git", versi
 ambur-wl-minter = { path = "./packages/ambur-whitelist-ticket/contracts/minter", features = ["library"] }
 derpies-minter = { path = "./packages/derpies-minter/contracts/minter", features = ["library"] }
 ghouls-minter = { path = "./packages/ghouls-minter", features = ["library"] }
-whitelist-minter = { path = "./packages/archies-whitelist-minter", features = ["library"] }
+
+whitelist-minter = { git = "ssh://git@github.com/phi-labs-ltd/archies-whitelist-minter.git", version = "1.0.1", features = ["library"] }

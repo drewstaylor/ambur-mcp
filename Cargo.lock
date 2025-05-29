@@ -58,7 +58,7 @@ dependencies = [
  "derpies-token",
  "ghouls-minter",
  "ghouls-token",
- "philabs-cw721-marketplace",
+ "philabs-cw721-marketplace 2.1.1 (git+ssh://git@github.com/phi-labs-ltd/philabs-cw721-marketplace.git)",
  "rmcp",
  "schemars",
  "serde",
@@ -1152,7 +1152,7 @@ dependencies = [
  "cw2 0.14.0",
  "derpies-token",
  "outpost-router",
- "philabs-cw721-marketplace",
+ "philabs-cw721-marketplace 2.1.1",
  "schemars",
  "serde",
  "serde-json-wasm 1.0.1",
@@ -1425,7 +1425,7 @@ dependencies = [
  "cw721-metadata 0.1.0 (git+https://github.com/archway-network/cw721-metadata.git?rev=4c008ca)",
  "cw721-updatable",
  "ghouls-token",
- "philabs-cw721-marketplace",
+ "philabs-cw721-marketplace 2.1.1",
  "schemars",
  "serde",
  "serde-json-wasm 1.0.1",
@@ -1752,6 +1752,26 @@ checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
 [[package]]
 name = "philabs-cw721-marketplace"
 version = "2.1.1"
+dependencies = [
+ "cosmos_coin",
+ "cosmwasm-std 1.5.11",
+ "cosmwasm-storage",
+ "cw-storage-plus 0.12.1",
+ "cw2 0.12.1",
+ "cw20 0.13.4",
+ "cw20-base 0.13.4",
+ "cw721 0.13.4",
+ "cw721-base 0.13.4",
+ "schemars",
+ "serde",
+ "serde-json-wasm 1.0.1",
+ "thiserror 1.0.69",
+]
+
+[[package]]
+name = "philabs-cw721-marketplace"
+version = "2.1.1"
+source = "git+ssh://git@github.com/phi-labs-ltd/philabs-cw721-marketplace.git#b5621289e60c976dda08b81edbdb9ab7f288cfde"
 dependencies = [
  "cosmos_coin",
  "cosmwasm-std 1.5.11",
@@ -2414,6 +2434,7 @@ dependencies = [
 [[package]]
 name = "whitelist-minter"
 version = "1.0.1"
+source = "git+ssh://git@github.com/phi-labs-ltd/archies-whitelist-minter.git#372dd6cf74e83e406e42e095a95af5b99d72d504"
 dependencies = [
  "archies-token",
  "cosmwasm-std 1.5.11",
