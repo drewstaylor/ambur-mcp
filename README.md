@@ -3,7 +3,9 @@
 MCP server in Rust, for wrapping Ambur query and execute entry point messages to be broadcast by a signer.
 
 ### Configuring dependencies
-Some dependencies in `Cargo.toml` are provided by GitHub repositories. Public repositories will require no extra configuration, but private repositories must be cloned into the `./packages` folder. This project will not compile unless all GitHub dependencies from private repositories are cloned into `./packages`.
+Some dependencies in `Cargo.toml` are provided by GitHub repositories, including some repositories which are private. If you don't have read access to the private repositories, unfortunately, you will not be able to build this project. 
+
+This project remains open source as it provides examples for developers building an MCP server for multiple CosmWasm contracts. If you're looking for an example you can build and test yourself check out the [cosmwasm-mcp-template](https://github.com/archway-network/cosmwasm-mcp-template) repository; it shares most of the same code as this repository, but doesn't rely on any private dependencies. The main difference between the two projects being, the [cosmwasm-mcp-template](https://github.com/archway-network/cosmwasm-mcp-template) doesn't include multi-contract support.
 
 ### Building this project
 
